@@ -1,0 +1,105 @@
+[
+{"id":"koshari","title":"Koshari","ar":"كشري","aka":"kushari koshary","emoji":"🍚","servings":4,"time":70,"slots":["lunch","dinner"],"tags":["egyptian","vegan","comfort"],
+ "ing":[["rice",250],["lentils_brown",200],["macaroni",250],["vermicelli",50],["chickpeas_can",1],["onion",4],["garlic",6],["passata",500],["vinegar",60],["cumin",4,"2 tsp"],["chili_flakes",1],["oil",150],["salt",15]],
+ "steps":["Cover the lentils with water and simmer 20–25 min until tender but not mushy. Drain and set aside.","Slice the onions thinly and fry in hot oil, stirring, until deep golden and crisp. Lift out onto paper towel and keep the oil.","Rice: fry the vermicelli in 2 tbsp of the onion oil until brown, add the rice and stir for 1 minute. Add about 400 ml hot water and a pinch of salt, cover and cook on low for 15 min.","Cook the macaroni according to the pack and drain.","Sauce: fry 4 crushed garlic cloves in a little oil, add passata, cumin, chili and salt. Simmer 15 min.","Dakka: mix 2 crushed garlic cloves with the vinegar, 3 tbsp water, a pinch of cumin and salt.","Layer rice, lentils, macaroni and chickpeas on each plate. Top with tomato sauce, crispy onions and a splash of dakka."]},
+
+{"id":"ful-medames","title":"Ful Medames","ar":"فول مدمس","aka":"foul fool fava beans","emoji":"🫘","servings":2,"time":15,"slots":["breakfast","lunch"],"tags":["egyptian","vegan","quick","breakfast"],
+ "ing":[["fava_can",2],["garlic",2],["lemon",1],["olive_oil",30],["cumin",2,"1 tsp"],["tomato",150],["parsley",0.5],["pita",2],["chili_flakes",1],["salt",3]],
+ "steps":["Warm the beans with their liquid in a pan for 5 min and mash roughly with a fork.","Stir in crushed garlic, cumin, salt and the juice of the lemon.","Finely chop the tomato and parsley.","Serve in a bowl, drizzle with olive oil, top with tomato, parsley and a pinch of chili. Eat with pita."]},
+
+{"id":"taameya","title":"Ta'ameya (Egyptian Falafel)","ar":"طعمية","aka":"tameya falafel","emoji":"🧆","servings":4,"time":50,"slots":["breakfast","lunch","dinner"],"tags":["egyptian","vegan","needs-planning"],
+ "ing":[["fava_dried",300],["parsley",1],["dill",1],["coriander_fresh",1],["leek",1],["garlic",6],["onion",1],["cumin",6,"1 tbsp"],["coriander_ground",4,"2 tsp"],["baking_soda",4,"1 tsp"],["sesame",20],["salt",8],["oil",400],["pita",4],["tomato",200],["cucumber",1],["tahini",60]],
+ "steps":["Soak the fava beans in plenty of cold water overnight (8–12 h), then drain well.","Blitz beans, herbs, chopped leek, onion, garlic, cumin, coriander and salt in a food processor to a fine, green, slightly grainy paste.","Rest 30 min, then mix in the baking soda.","With wet hands shape into small patties and press one side into sesame seeds.","Deep-fry in hot oil (170–175 °C) about 3 min per side until deep golden and crisp. Drain on paper towel.","Serve in pita with sliced tomato, cucumber and tahini thinned with a little water."]},
+
+{"id":"molokhia-chicken","title":"Molokhia with Chicken & Rice","ar":"ملوخية","aka":"mulukhiyah jews mallow","emoji":"🍲","servings":4,"time":80,"slots":["lunch","dinner"],"tags":["egyptian","chicken","comfort"],
+ "ing":[["chicken_thigh",1000],["molokhia_frozen",400],["garlic",8],["coriander_ground",6,"1 tbsp"],["ghee",40],["stock_cube",2],["onion",1],["rice",300],["lemon",1],["salt",8],["pepper",2]],
+ "steps":["Simmer the chicken with a halved onion, stock cubes, salt and pepper in about 1.5 l water for 35 min. Skim the foam.","Lift out the chicken and brown it in a hot oven (220 °C) or a pan for 10–15 min. Keep the broth.","Cook the rice according to the pack.","Heat 800 ml of the broth, add the thawed molokhia and bring to a gentle simmer for 5 min. Do not boil hard.","Ta'leya: fry crushed garlic in the ghee until just golden, stir in the ground coriander, then pour it into the molokhia (it will sizzle).","Serve the molokhia over rice with the chicken and lemon wedges."]},
+
+{"id":"fattah","title":"Fattah with Beef","ar":"فتة","aka":"fatta feast","emoji":"🥘","servings":4,"time":120,"slots":["lunch","dinner"],"tags":["egyptian","beef","festive"],
+ "ing":[["beef_cubes",600],["rice",300],["pita",3],["garlic",8],["vinegar",60],["passata",400],["onion",1],["stock_cube",1],["ghee",30],["salt",8],["pepper",2]],
+ "steps":["Cover the beef with water, add a halved onion, stock cube and salt. Simmer about 90 min until very tender. Keep the broth.","Tear the pita into pieces and bake at 200 °C for 10 min until crisp.","Cook the rice, using a little of the broth for flavor.","Sauce: fry crushed garlic in the ghee, add the vinegar, then the passata and salt. Simmer 10 min.","Layer pita, then rice, sprinkle a few spoons of broth, pour over the tomato-garlic sauce and top with the beef. Serve right away."]},
+
+{"id":"hawawshi","title":"Hawawshi","ar":"حواوشي","aka":"hawashi meat stuffed bread","emoji":"🥙","servings":4,"time":45,"slots":["lunch","dinner"],"tags":["egyptian","beef"],
+ "ing":[["beef_mince",500],["onion",2],["bell_pepper",1],["parsley",1],["baharat",4,"2 tsp"],["paprika",3],["tomato_paste",30],["salt",6],["pepper",2],["pita",4],["oil",30]],
+ "steps":["Finely chop the onions, pepper and parsley.","Mix with the mince, baharat, paprika, tomato paste, salt and pepper until sticky.","Open each pita along one edge, stuff with the filling and press flat.","Brush the outsides with oil.","Bake at 220 °C for 15–20 min, flipping once, until crisp and cooked through.","Cut into wedges and serve with a tomato and cucumber salad."]},
+
+{"id":"shakshuka","title":"Shakshuka","ar":"شكشوكة","aka":"eggs in tomato sauce","emoji":"🍳","servings":2,"time":25,"slots":["breakfast","lunch","dinner"],"tags":["arab","vegetarian","quick","breakfast"],
+ "ing":[["egg",4],["canned_tomatoes",400],["onion",1],["bell_pepper",1],["garlic",2],["paprika",3],["cumin",2,"1 tsp"],["chili_flakes",1],["olive_oil",20],["parsley",0.5],["pita",2],["feta",50],["salt",3]],
+ "steps":["Soften diced onion and pepper in the olive oil for 8 min.","Add garlic, paprika, cumin and chili and stir for 1 min.","Add the tomatoes and salt and simmer about 10 min until thick.","Make four wells, crack in the eggs, cover and cook 5–7 min until the whites are set.","Top with feta and parsley. Serve with pita."]},
+
+{"id":"lentil-soup","title":"Lentil Soup","ar":"شوربة عدس","aka":"shorbet ads","emoji":"🥣","servings":4,"time":35,"slots":["lunch","dinner"],"tags":["egyptian","vegan","soup"],
+ "ing":[["lentils_red",250],["onion",1],["carrot",200],["garlic",3],["cumin",4,"2 tsp"],["olive_oil",30],["lemon",1],["stock_cube",1],["pita",2],["salt",6],["pepper",1]],
+ "steps":["Sauté diced onion, carrot and garlic in the oil for 5 min. Stir in the cumin.","Add the lentils, 1.2 l water and the stock cube. Simmer 25 min until the lentils fall apart.","Blend until smooth and season with salt and pepper.","Serve with a squeeze of lemon and warm pita."]},
+
+{"id":"mesaa3a","title":"Mesaa'a (Eggplant Stew)","ar":"مسقعة","aka":"mesaqa'a moussaka","emoji":"🍆","servings":4,"time":55,"slots":["lunch","dinner"],"tags":["egyptian","vegan"],
+ "ing":[["eggplant",3],["bell_pepper",1],["onion",1],["garlic",4],["passata",400],["cumin",2,"1 tsp"],["vinegar",15],["oil",150],["rice",250],["salt",6],["pepper",1]],
+ "steps":["Peel the eggplants in stripes, cut into thick slices, salt them and leave 15 min. Pat dry.","Fry the slices in oil until golden, then drain on paper towel.","In another pan fry onion, pepper and garlic. Add passata, cumin, vinegar, salt and pepper and simmer 10 min.","Add the eggplant, cover and simmer 15 min.","Serve with rice."]},
+
+{"id":"macarona-bechamel","title":"Macarona Béchamel","ar":"مكرونة بشاميل","aka":"egyptian baked pasta","emoji":"🍝","servings":6,"time":80,"slots":["lunch","dinner"],"tags":["egyptian","beef","baked","comfort"],
+ "ing":[["penne",500],["beef_mince",400],["onion",1],["passata",300],["tomato_paste",40],["butter",60],["flour",60],["milk",750],["nutmeg",1],["cheese_grated",100],["cinnamon",1],["salt",8],["pepper",2],["oil",20]],
+ "steps":["Cook the penne al dente, drain and toss with a little oil.","Brown the mince with the chopped onion. Add tomato paste, passata, cinnamon, salt and pepper and simmer 15 min.","Béchamel: melt the butter, stir in the flour for 1 min, then whisk in the milk gradually. Cook until thick, then season with salt, pepper and nutmeg.","Layer half the pasta in a baking dish, then all the meat sauce, then the rest of the pasta.","Pour the béchamel over the top and sprinkle with cheese.","Bake at 200 °C for 25–30 min until golden. Rest 10 min before cutting."]},
+
+{"id":"kofta-potatoes","title":"Kofta with Potatoes","ar":"كفتة بالبطاطس","aka":"kofta tray bake","emoji":"🥩","servings":4,"time":60,"slots":["lunch","dinner"],"tags":["egyptian","beef","tray-bake"],
+ "ing":[["beef_mince",500],["onion",2],["parsley",1],["baharat",4,"2 tsp"],["potato",800],["passata",400],["bell_pepper",1],["garlic",3],["oil",40],["rice",250],["salt",8],["pepper",2]],
+ "steps":["Grate 1 onion, chop the parsley and mix with the mince, baharat, salt and pepper. Shape into finger-sized koftas.","Slice the potatoes and the other onion, toss with oil and salt, and spread in a baking tray. Bake at 200 °C for 15 min.","Mix the passata with crushed garlic, pepper strips, salt and a splash of water.","Arrange the kofta over the potatoes and pour the sauce over everything.","Bake another 30 min. Serve with rice."]},
+
+{"id":"bamya","title":"Bamya (Okra Stew with Beef)","ar":"بامية باللحمة","aka":"okra bamia","emoji":"🌿","servings":4,"time":70,"slots":["lunch","dinner"],"tags":["egyptian","beef"],
+ "ing":[["okra_frozen",400],["beef_cubes",400],["onion",1],["garlic",5],["tomato_paste",40],["passata",300],["coriander_ground",4,"2 tsp"],["ghee",20],["lemon",1],["rice",250],["salt",6],["pepper",1]],
+ "steps":["Simmer the beef with the onion and salt in 700 ml water for about 50 min until tender.","In a pot, fry the garlic and coriander in the ghee. Add tomato paste and passata and cook 5 min.","Add the okra (no need to thaw), the beef and about 300 ml of its broth. Simmer 15 min.","Finish with a squeeze of lemon. Serve with rice."]},
+
+{"id":"roz-shaareya","title":"Vermicelli Rice","ar":"رز بالشعرية","aka":"egyptian rice roz bel shaareya side","emoji":"🍚","servings":4,"time":25,"slots":["lunch","dinner"],"tags":["egyptian","vegetarian","side"],
+ "ing":[["rice",300],["vermicelli",60],["butter",30],["salt",5]],
+ "steps":["Toast the vermicelli in the butter, stirring, until deep brown.","Add the rice and stir for 1 min.","Pour in about 450 ml hot water, add the salt, cover and cook on low for 15 min.","Rest 5 min off the heat, then fluff with a fork."]},
+
+{"id":"chickpea-salad","title":"Chickpea & Feta Salad","emoji":"🥗","servings":2,"time":10,"slots":["lunch"],"tags":["arab","vegetarian","quick","salad"],
+ "ing":[["chickpeas_can",2],["cucumber",1],["tomato",300],["parsley",0.5],["lemon",1],["olive_oil",30],["feta",100],["cumin",1],["salt",2]],
+ "steps":["Drain and rinse the chickpeas.","Dice the cucumber and tomato, chop the parsley.","Toss everything with lemon juice, olive oil, cumin and salt, and crumble the feta on top."]},
+
+{"id":"lemon-cumin-chicken","title":"Lemon-Cumin Chicken with Rice","emoji":"🍗","servings":4,"time":55,"slots":["lunch","dinner"],"tags":["arab","chicken","tray-bake"],
+ "ing":[["chicken_thigh",1000],["lemon",2],["garlic",4],["yogurt",100],["cumin",6,"1 tbsp"],["paprika",4],["olive_oil",30],["rice",300],["cucumber",1],["tomato",300],["salt",8]],
+ "steps":["Mix the yogurt, juice of 1 lemon, crushed garlic, cumin, paprika, oil and salt. Coat the chicken and marinate at least 30 min (overnight is better).","Roast at 210 °C, skin side up, for 35–40 min until golden and cooked through.","Cook the rice according to the pack.","Chop cucumber and tomato and dress with the juice of the second lemon and a pinch of salt.","Serve the chicken over rice with the salad."]},
+
+{"id":"spaghetti-bolognese","title":"Spaghetti Bolognese","emoji":"🍝","servings":4,"time":45,"slots":["dinner"],"tags":["italian","beef","comfort"],
+ "ing":[["spaghetti",400],["beef_mince",500],["onion",1],["carrot",150],["garlic",2],["canned_tomatoes",400],["tomato_paste",40],["oregano",2],["parmesan",40],["olive_oil",20],["salt",6],["pepper",1]],
+ "steps":["Soften finely chopped onion and carrot in the oil for 5 min, then add the garlic.","Add the mince and brown for 8 min.","Stir in the tomato paste for 1 min, then add tomatoes, oregano, salt and pepper. Simmer 25 min.","Cook the spaghetti, drain and serve with the sauce and parmesan."]},
+
+{"id":"chicken-alfredo","title":"Chicken Alfredo","emoji":"🍗","servings":4,"time":30,"slots":["dinner"],"tags":["italian","chicken","creamy"],
+ "ing":[["penne",350],["chicken_breast",500],["cream",400],["butter",30],["garlic",3],["parmesan",80],["salt",4],["pepper",1]],
+ "steps":["Cook the pasta and keep a cup of the cooking water.","Slice and season the chicken. Fry in the butter until golden and cooked through, then remove.","In the same pan cook the garlic for 30 sec, add the cream and simmer 3 min.","Stir in the parmesan until melted and return the chicken to the pan.","Toss with the pasta, loosening with pasta water if needed."]},
+
+{"id":"chicken-parmesan","title":"Chicken Parmesan","emoji":"🧀","servings":4,"time":50,"slots":["dinner"],"tags":["italian","chicken","baked"],
+ "ing":[["chicken_breast",600],["breadcrumbs",100],["egg",1],["flour",40],["parmesan",40],["passata",300],["mozzarella",125],["oregano",2],["garlic",2],["spaghetti",250],["olive_oil",40],["salt",4],["pepper",1]],
+ "steps":["Slice the breasts horizontally into cutlets and pound thin.","Coat in flour, beaten egg, then breadcrumbs mixed with half of the parmesan.","Fry in the oil 3 min per side until golden and place in a baking dish.","Simmer the passata with garlic, oregano and salt for 8 min, spoon over the chicken and top with sliced mozzarella and the rest of the parmesan.","Bake at 200 °C for 12–15 min.","Serve with spaghetti."]},
+
+{"id":"tomato-chicken-pasta","title":"Tomato Chicken Pasta","emoji":"🍅","servings":4,"time":30,"slots":["lunch","dinner"],"tags":["italian","chicken","quick"],
+ "ing":[["penne",350],["chicken_breast",400],["onion",1],["garlic",2],["passata",400],["oregano",2],["paprika",2],["cheese_grated",60],["olive_oil",20],["salt",4],["pepper",1]],
+ "steps":["Cook the pasta according to the pack.","Fry diced chicken in the oil until golden, then add onion and garlic for 3 min.","Add paprika, oregano, passata and salt. Simmer 10 min.","Toss with the pasta and top with grated cheese."]},
+
+{"id":"chicken-curry","title":"Chicken Curry with Rice","emoji":"🍛","servings":4,"time":40,"slots":["lunch","dinner"],"tags":["curry","chicken"],
+ "ing":[["chicken_breast",500],["onion",1],["garlic",3],["curry_powder",10,"1 tbsp"],["coconut_milk",400],["tomato_paste",20],["rice",300],["oil",20],["salt",4]],
+ "steps":["Cook the rice according to the pack.","Fry diced chicken in the oil until browned, remove.","Soften the onion and garlic, stir in curry powder and tomato paste for 1 min.","Add the coconut milk and chicken and simmer 15 min. Season with salt.","Serve over rice."]},
+
+{"id":"scrambled-eggs-toast","title":"Scrambled Eggs on Toast","emoji":"🍳","servings":2,"time":10,"slots":["breakfast"],"tags":["breakfast","quick","vegetarian"],
+ "ing":[["egg",4],["toast",4],["butter",15],["milk",40],["tomato",100],["salt",2],["pepper",0.5]],
+ "steps":["Whisk the eggs with the milk, salt and pepper.","Melt the butter and scramble the eggs over low heat until just set.","Toast the bread and serve with sliced tomato."]},
+
+{"id":"overnight-oats","title":"Overnight Oats","emoji":"🥣","servings":2,"time":5,"slots":["breakfast"],"tags":["breakfast","quick","vegetarian","make-ahead"],
+ "ing":[["oats",100],["milk",200],["yogurt",150],["honey",20],["banana",1],["berries_frozen",80]],
+ "steps":["Stir oats, milk, yogurt and honey together in two jars.","Cover and chill overnight.","Top with sliced banana and berries in the morning."]},
+
+{"id":"pancakes","title":"Pancakes","emoji":"🥞","servings":4,"time":25,"slots":["breakfast"],"tags":["breakfast","vegetarian"],
+ "ing":[["flour",200],["milk",300],["egg",2],["sugar",20],["baking_powder",8],["butter",30],["salt",1],["banana",2],["honey",40]],
+ "steps":["Whisk flour, sugar, baking powder and salt. Add milk, eggs and 15 g melted butter and mix until just combined.","Fry ladlefuls in a little butter over medium heat until bubbles form, flip and cook 1 more minute.","Serve with sliced banana and honey."]},
+
+{"id":"tuna-wrap","title":"Tuna Wrap","emoji":"🌯","servings":2,"time":10,"slots":["lunch"],"tags":["lunch","quick"],
+ "ing":[["tortilla",2],["tuna_can",2],["cucumber",0.5],["yogurt",60],["tomato",100],["lettuce",0.5]],
+ "steps":["Drain the tuna and mix with the yogurt.","Slice the cucumber and tomato and shred the lettuce.","Fill the tortillas, roll tightly and cut in half."]},
+
+{"id":"salmon-potatoes","title":"Baked Salmon with Potatoes","emoji":"🐟","servings":2,"time":35,"slots":["dinner"],"tags":["fish","tray-bake"],
+ "ing":[["salmon_frozen",250],["potato",600],["zucchini",300],["olive_oil",30],["lemon",1],["garlic",2],["salt",4],["pepper",1]],
+ "steps":["Thaw the salmon. Cut the potatoes into wedges and toss with half the oil and salt. Bake at 200 °C for 15 min.","Add the sliced zucchini and garlic to the tray.","Place the salmon on top, drizzle with the remaining oil, season, and bake 12–15 min.","Serve with lemon wedges."]},
+
+{"id":"garlic-pasta","title":"Spaghetti Aglio e Olio","emoji":"🧄","servings":2,"time":15,"slots":["lunch","dinner"],"tags":["italian","vegetarian","quick"],
+ "ing":[["spaghetti",200],["garlic",5],["olive_oil",40],["chili_flakes",1],["parsley",0.5],["parmesan",20],["salt",4]],
+ "steps":["Cook the spaghetti in salted water and keep a cup of the water.","Gently warm sliced garlic and chili in the oil until pale golden.","Toss in the spaghetti with a splash of pasta water, then the chopped parsley and parmesan."]}
+]

@@ -26,5 +26,8 @@ Mostafa + Menna. Personal use only, phones (iPhone Safari, added to Home Screen)
 - Own recipes: add in app, or import from a URL / pasted text via Claude (see below).
 - Imported/own recipes are stored in `Mealy-data/recipes/`.
 
-## Open
-- Recipe import workflow (in-app vs. via Claude sessions).
+## Recipe import
+Sites are read by Claude in a session (when the site allows it) or pasted/screenshotted by the user. Claude converts to the app format (metric units, catalog item ids, store tags) and commits to `Mealy-data/recipes.json`. Sites that block bots (e.g. Tasty) -> paste text.
+
+## Pantry model
+Append-only purchase ledger. Stock before a list = earlier purchases minus planned usage. Ticking an item records a purchase tagged with the list's week; leftovers show as "probably still at home" in later lists.
