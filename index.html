@@ -17,6 +17,17 @@
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+<div id="splash" aria-hidden="true"><svg viewBox="0 0 1024 1024" width="300" height="300"><g transform="translate(-78 30)" fill="none" stroke="#b79f6a" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"><g class="cart"><path d="M176 262H262L340 400"/><path d="M340 400H840C840 520.0 745.0 606.4 640.0 611.2V640H540.0V611.2C435.0 606.4 340 520.0 340 400Z"/><g class="wind w0"><path class="base" d="M485 349C507 301 463 264 485 213"/><g class="drift d0"><path d="M485 349C507 301 463 264 485 213"/></g></g><g class="wind w1"><path class="base" d="M590 349C612 301 568 264 590 213"/><g class="drift d1"><path d="M590 349C612 301 568 264 590 213"/></g></g><g class="wind w2"><path class="base" d="M695 349C717 301 673 264 695 213"/><g class="drift d2"><path d="M695 349C717 301 673 264 695 213"/></g></g><g class="wheel"><circle cx="500" cy="716" r="34"/><path class="spoke" d="M500 716V690"/></g><g class="wheel"><circle cx="690" cy="716" r="34"/><path class="spoke" d="M690 716V690"/></g></g></g></svg></div>
+<script>
+(function () {
+  var s = document.getElementById('splash');
+  var seen = false, reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  try { seen = sessionStorage.getItem('mealy:splash'); sessionStorage.setItem('mealy:splash', '1'); } catch (e) {}
+  if (seen || reduce) { s.remove(); return; }
+  setTimeout(function () { s.classList.add('out'); }, 1900);
+  setTimeout(function () { s.remove(); }, 2250);
+})();
+</script>
 <header class="top">
   <h1 id="title">Mealy</h1>
   <button class="sync" id="syncBtn" data-act="settings" aria-label="Sync and settings"><i id="syncDot"></i><span id="syncText">Local</span></button>

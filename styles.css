@@ -169,3 +169,23 @@ textarea.field { resize: none; line-height: 1.5; }
 .sheet.fixed { height: 94%; display: flex; flex-direction: column; overflow: hidden; }
 .sheet.fixed .list-pick { flex: 1; min-height: 0; max-height: none; overflow-y: auto; overscroll-behavior: contain; }
 .sheet.fixed .list-pick .rrow:first-child { border-top: 0; }
+
+/* ---------- opening animation ---------- */
+#splash { position: fixed; inset: 0; z-index: 100; display: grid; place-items: center; background: #fff; overflow: hidden; transition: opacity .35s ease; }
+#splash.out { opacity: 0; pointer-events: none; }
+#splash svg { width: min(64vw, 290px); height: auto; overflow: visible; }
+#splash .cart, #splash .wheel, #splash .wind, #splash .drift { transform-box: fill-box; }
+#splash .cart { animation: roll 1.15s cubic-bezier(.3,.55,.25,1) both; }
+#splash .wheel { transform-origin: 50% 50%; animation: spin 1.15s cubic-bezier(.3,.55,.25,1) both; }
+#splash .spoke { animation: spoke 1.15s linear both; }
+#splash .wind { transform-origin: 50% 100%; animation: wind 1.4s cubic-bezier(.25,.6,.25,1) both, sway 2.4s ease-in-out 1.4s infinite; }
+#splash .w1 { animation-delay: .06s, 1.4s; } #splash .w2 { animation-delay: .12s, 1.4s; }
+#splash .drift { opacity: 0; transform-origin: 50% 100%; animation: drift 1.6s ease-in-out 1.05s infinite; }
+#splash .d1 { animation-delay: 1.35s; } #splash .d2 { animation-delay: 1.65s; }
+@keyframes roll { from { transform: translateX(-1300px); } to { transform: translateX(0); } }
+@keyframes spin { from { transform: rotate(0); } to { transform: rotate(1500deg); } }
+@keyframes spoke { 0%, 82% { opacity: 1; } 100% { opacity: 0; } }
+@keyframes wind { 0% { transform: rotate(-62deg) scaleY(.8); } 50% { transform: rotate(-42deg) scaleY(.9); } 100% { transform: rotate(0) scaleY(1); } }
+@keyframes sway { 0%, 100% { transform: rotate(0); } 50% { transform: rotate(3.5deg); } }
+@keyframes drift { 0% { opacity: 0; transform: translateY(8px); } 25% { opacity: .9; } 100% { opacity: 0; transform: translateY(-38px) skewX(-6deg); } }
+@media (prefers-reduced-motion: reduce) { #splash { display: none; } }
