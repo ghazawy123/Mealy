@@ -2,7 +2,6 @@
 
 export const SLOTS = ['breakfast', 'lunch', 'dinner'];
 export const SLOT_LABEL = { breakfast: 'Breakfast', lunch: 'Lunch', dinner: 'Dinner' };
-export const SLOT_ICON = { breakfast: '🌅', lunch: '☀️', dinner: '🌙' };
 export const STORES = {
   aldi: 'Aldi Süd',
   edeka: 'Edeka',
@@ -26,14 +25,18 @@ export function isoWeek(s) {
   return 1 + Math.round(((d - w1) / 864e5 - 3 + ((w1.getDay() + 6) % 7)) / 7);
 }
 const MON = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const MONF = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 const DOW = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+const DOWF = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+export const dowFull = (s) => DOWF[parseISO(s).getDay()];
+export const monFull = (s) => MONF[parseISO(s).getMonth()];
 export const dowName = (s) => DOW[parseISO(s).getDay()];
 export const dayNum = (s) => parseISO(s).getDate();
 export const monName = (s) => MON[parseISO(s).getMonth()];
 export const prettyDate = (s) => `${dowName(s)} ${dayNum(s)} ${monName(s)}`;
 export function prettyRange(from, weeks = 1) {
   const a = from, b = addDays(from, weeks * 7 - 1);
-  return monName(a) === monName(b) ? `${dayNum(a)} – ${dayNum(b)} ${monName(b)}` : `${dayNum(a)} ${monName(a)} – ${dayNum(b)} ${monName(b)}`;
+  return monName(a) === monName(b) ? `${dayNum(a)} – ${dayNum(b)} ${monFull(b)}` : `${dayNum(a)} ${monName(a)} – ${dayNum(b)} ${monName(b)}`;
 }
 
 // ---------- entries (id -> {..., u, d}) ----------
@@ -175,18 +178,18 @@ export function buildList({ plan, purchases, marks, recipes, catalog, from, week
   };
 }
 
-export function shareText(list, { title = 'Shopping list', names } = {}) {
-  const lines = [`🛒 ${title} (${prettyRange(list.from, list.weeks)})`];
+export function shareText(list, { title = 'Shopping list' } = {}) {
+  const lines = [`*${title}*`, prettyRange(list.from, list.weeks)];
   const open = list.rows.filter((r) => r.section === 'buy' && !r.done);
   for (const st of STORE_ORDER) {
     const rs = open.filter((r) => r.store === st);
     if (!rs.length) continue;
     lines.push('', `*${STORES[st]}*`);
-    for (const r of rs) lines.push(`☐ ${r.item.name} – ${r.packsNeeded - r.packsBought > 0 ? r.packsNeeded - r.packsBought : r.packsNeeded}× ${r.item.packLabel || ''}`.trim());
+    for (const r of rs) { const n = r.packsNeeded - r.packsBought > 0 ? r.packsNeeded - r.packsBought : r.packsNeeded; lines.push(`- ${r.item.name}, ${n} x ${r.item.packLabel || 'pack'}`); }
   }
   const home = list.rows.filter((r) => r.section === 'home');
-  if (home.length) lines.push('', '_Maybe still at home:_ ' + home.map((r) => r.item.name).join(', '));
-  if (lines.length === 1) lines.push('', 'Nothing to buy 🎉');
+  if (home.length) lines.push('', 'Maybe still at home: ' + home.map((r) => r.item.name).join(', '));
+  if (lines.length === 2) lines.push('', 'Nothing to buy.');
   return lines.join('\n');
 }
 
@@ -218,9 +221,9 @@ export function searchRecipes(recipes, catalog, q, { tag = '', boost = {}, limit
 }
 
 export function recipeText(r, catalog, factor = 1) {
-  const L = [`🍽 ${r.title}${r.ar ? ' – ' + r.ar : ''}`, `Serves ${Math.round(r.servings * factor * 10) / 10}${r.time ? ' · ' + r.time + ' min' : ''}`, '', 'Ingredients'];
-  for (const i of r.ingredients) L.push(`• ${i.disp && factor === 1 ? i.disp + ' ' : ''}${catalog[i.item]?.name || i.item} – ${fmtQty(i.qty * factor, catalog[i.item])}`);
-  L.push('', 'Steps');
+  const L = [`*${r.title}*${r.ar ? ' (' + r.ar + ')' : ''}`, `Serves ${Math.round(r.servings * factor * 10) / 10}${r.time ? ', ' + r.time + ' minutes' : ''}`, '', '*Ingredients*'];
+  for (const i of r.ingredients) L.push(`- ${i.disp && factor === 1 ? i.disp + ' ' : ''}${catalog[i.item]?.name || i.item} – ${fmtQty(i.qty * factor, catalog[i.item])}`);
+  L.push('', '*Steps*');
   r.steps.forEach((s, n) => L.push(`${n + 1}. ${s.text}`));
   if (r.source?.url) L.push('', r.source.url);
   return L.join('\n');
