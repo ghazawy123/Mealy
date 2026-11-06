@@ -228,3 +228,24 @@ export function recipeText(r, catalog, factor = 1) {
   if (r.source?.url) L.push('', r.source.url);
   return L.join('\n');
 }
+
+// ---------- meal traits (for the small icons in the plan) ----------
+const TRAIT_ITEMS = {
+  chicken: ['chicken_breast', 'chicken_thigh'],
+  beef: ['beef_mince', 'beef_cubes'],
+  fish: ['salmon_frozen', 'tuna_can'],
+  egg: ['egg'],
+  dairy: ['milk', 'cream', 'yogurt', 'cream_cheese', 'parmesan', 'mozzarella', 'feta', 'cheese_grated'],
+  veg: ['tomato', 'potato', 'bell_pepper', 'cucumber', 'zucchini', 'eggplant', 'carrot', 'leek', 'lettuce', 'okra_frozen', 'molokhia_frozen', 'chickpeas_can', 'fava_can', 'fava_dried', 'lentils_brown', 'lentils_red', 'canned_tomatoes', 'passata'],
+  grain: ['rice', 'spaghetti', 'penne', 'macaroni', 'vermicelli', 'pita', 'toast', 'tortilla', 'oats', 'flour'],
+};
+const TRAIT_ORDER = ['chicken', 'beef', 'fish', 'egg', 'veg', 'dairy', 'grain'];
+// Returns up to `max` trait keys. A meal with no meat or fish also gets the leaf (vegetarian).
+export function mealTraits(recipe, max = 4) {
+  const ids = new Set((recipe?.ingredients || []).map((i) => i.item));
+  const has = (k) => TRAIT_ITEMS[k].some((x) => ids.has(x));
+  const t = new Set(TRAIT_ORDER.filter(has));
+  if (!t.has('chicken') && !t.has('beef') && !t.has('fish') && ids.size) t.add('veg');
+  return TRAIT_ORDER.filter((k) => t.has(k)).slice(0, max);
+}
+export const TRAIT_LABEL = { chicken: 'Chicken', beef: 'Beef', fish: 'Fish', egg: 'Egg', veg: 'Vegetables', dairy: 'Dairy', grain: 'Rice, pasta or bread' };

@@ -158,3 +158,9 @@ details.fold .group { margin-top: 14px; }
 .plus::before { width: 14px; height: 1.25px; } .plus::after { width: 1.25px; height: 14px; }
 .plus:active { background: var(--wash); border-color: var(--gold); }
 textarea.field { resize: none; line-height: 1.5; }
+
+/* ---------- meal icons ---------- */
+.tr { display: flex; gap: 6px; margin-top: 10px; }
+.tr span { display: inline-grid; place-items: center; width: 28px; height: 28px; border: 1px solid var(--line); border-radius: 7px; color: var(--gold); }
+.tr svg { width: 16px; height: 16px; }
+.meal.off .tr { opacity: .4; }

@@ -1,6 +1,7 @@
 // Mealy – UI. Vanilla JS, no build step.
 import * as L from './logic.js';
 import { createStore } from './sync.js';
+import { icon } from './icons.js';
 
 // ---------- tiny templating ----------
 const $ = (s, r = document) => r.querySelector(s);
@@ -57,9 +58,10 @@ function closeSheet() { $('#overlay').hidden = true; $('#sheet').innerHTML = '';
 const metaOf = (r) => [r.time ? `${r.time} minutes` : '', `Serves ${r.servings}`, r.fav ? `${r.fav === 'a' ? names().a : names().b}'s favorite` : ''].filter(Boolean).join(', ');
 const arOf = (r) => (r.ar ? html`<span class="ar" dir="rtl">${r.ar}</span>` : '');
 
+const traitRow = (r) => { const t = r ? L.mealTraits(r) : []; return t.length ? html`<span class="tr">${t.map((k) => html`<span title="${L.TRAIT_LABEL[k]}">${new Raw(icon(k))}</span>`)}</span>` : ''; };
 function mealBtn(e, ctx) {
   const r = ctx.recipes[e.recipeId];
-  return html`<button class="meal ${e.skip ? 'off' : ''}" data-act="entry" data-id="${e.id}"><span class="mn">${r?.title || 'Unknown recipe'}</span><span class="mw">${e.skip ? 'Skipped' : whoName(e.who)}</span></button>`;
+  return html`<button class="meal ${e.skip ? 'off' : ''}" data-act="entry" data-id="${e.id}"><span class="mn">${r?.title || 'Unknown recipe'}</span><span class="mw">${e.skip ? 'Skipped' : whoName(e.who)}</span>${traitRow(r)}</button>`;
 }
 
 function viewPlan(ctx) {

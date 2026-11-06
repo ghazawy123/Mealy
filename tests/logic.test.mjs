@@ -180,3 +180,16 @@ test('format', () => {
   assert.equal(L.fmtQty(0.5, catalog.parsley), '0.5 bunches');
   assert.equal(L.fmtEuro(3.5), '€3,50');
 });
+
+test('meal traits', async () => {
+  const fs = await import('node:fs');
+  const cat = L.normalizeCatalog(JSON.parse(fs.readFileSync(new URL('../data/catalog.json', import.meta.url))));
+  const recipes = Object.fromEntries(JSON.parse(fs.readFileSync(new URL('../data/recipes.json', import.meta.url))).map(L.normalizeRecipe).map((r) => [r.id, r]));
+  const tr = (id) => L.mealTraits(recipes[id]);
+  assert.ok(tr('chicken-alfredo').includes('chicken') && tr('chicken-alfredo').includes('dairy') && !tr('chicken-alfredo').includes('beef'));
+  assert.ok(tr('kofta-potatoes').includes('beef') && tr('kofta-potatoes').includes('veg'));
+  assert.ok(tr('salmon-potatoes').includes('fish'));
+  assert.ok(tr('koshari').includes('veg') && !tr('koshari').includes('chicken'));
+  assert.ok(tr('pancakes').includes('egg') && tr('pancakes').includes('veg'));
+  for (const r of Object.values(recipes)) assert.ok(L.mealTraits(r).length <= 4);
+});
