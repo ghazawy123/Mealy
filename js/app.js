@@ -99,7 +99,7 @@ const hostOf = (u) => { try { return new URL(u).hostname.replace(/^www\./, ''); 
 function inboxBlock() {
   const items = L.live(sec(R, 'inbox')).sort((x, y) => (x.u || 0) - (y.u || 0));
   if (!items.length) return '';
-  return html`<h2 class="hd">Waiting for Mealy</h2>${items.map((i) => html`<button class="rrow" data-act="inbox-open" data-id="${i.id}"><span class="rt">${i.title || (i.url ? hostOf(i.url) : 'Pasted text')}</span><span class="rm">${i.status === 'failed' ? (i.note || "Couldn't read this link. Paste the page text instead.") : i.url ? 'Link saved, ready to read' : 'Text saved, ready to read'}</span></button>`)}<div class="gap2"></div>`;
+  return html`<h2 class="hd">Waiting for Mealy</h2>${items.map((i) => html`<button class="rrow" data-act="inbox-open" data-id="${i.id}"><span class="rt" dir="auto">${i.title || (i.url ? hostOf(i.url) : i.lang === 'ar' ? 'Arabic text' : 'Pasted text')}</span><span class="rm">${i.status === 'failed' ? (i.note || "Couldn't read this link. Paste the page text instead.") : i.url ? 'Link saved, ready to read' : 'Text saved, ready to read'}</span></button>`)}<div class="gap2"></div>`;
 }
 function viewRecipes(ctx) {
   return html`
@@ -291,14 +291,14 @@ function openAddRecipe(id) {
   const on = (v, k) => (v === k ? 'on' : '');
   sheet(html`<h2>${cur ? 'Edit recipe' : 'Add a recipe'}</h2>
     <p class="meta">Mealy turns it into ingredients and steps. You only add a link or the page text.</p>
-    <span class="lbl">Name</span><input class="field" id="ar-title" placeholder="Leave empty to use the page title" value="${cur?.title || ''}" data-id="${id || ''}">
+    <span class="lbl">Name</span><input class="field" id="ar-title" dir="auto" placeholder="Leave empty to use the page title" value="${cur?.title || ''}" data-id="${id || ''}">
     <span class="lbl">Favorite of</span>
     <div class="seg" id="ar-fav"><button type="button" class="${on(cur?.fav, 'a')}" data-act="ar-fav" data-v="a">${n.a}</button><button type="button" class="${on(cur?.fav, 'b')}" data-act="ar-fav" data-v="b">${n.b}</button></div>
     <span class="lbl">Good for</span>
     <div class="chips" id="ar-slots">${L.SLOTS.map((s) => html`<button type="button" class="chip ${(cur?.slots || []).includes(s) ? 'on' : ''}" data-act="ar-slot" data-slot="${s}">${L.SLOT_LABEL[s]}</button>`)}</div>
     <span class="lbl">Link</span><input class="field" id="ar-url" type="url" inputmode="url" placeholder="https://" autocomplete="off" autocapitalize="off" value="${cur?.url || ''}">
-    <span class="lbl">Or paste the whole page text</span><textarea class="field" id="ar-text" rows="7" placeholder="Select all on the recipe page, copy, and paste here">${cur?.text || ''}</textarea>
-    <p class="tiny muted" style="margin-top:12px">Mealy reads it when you ask. If a site blocks it, it shows up here and you can paste the text instead.</p>
+    <span class="lbl">Or paste the whole page text</span><textarea class="field" id="ar-text" dir="auto" rows="7" placeholder="Select all on the recipe page, copy, and paste here">${cur?.text || ''}</textarea>
+    <p class="tiny muted" style="margin-top:12px">Arabic is fine. Mealy translates it into English and builds the recipe. If a site blocks the link, it shows up here and you can paste the text instead.</p>
     <div class="gap2"></div><button class="btn main block" data-act="ar-save" data-id="${id || ''}">Save</button>
     ${cur ? html`<div class="gap"></div><button class="btn warn block small" data-act="ar-del" data-id="${id}">Remove</button>` : ''}`, 'addrecipe');
 }
@@ -367,7 +367,7 @@ const A = {
     if (!url && !text) return toast('Add a link or paste the page text');
     if (url && !/^https?:\/\/\S+$/i.test(url)) return toast('The link should start with https://');
     const id = el.dataset.id || L.newId();
-    store.put(R, 'inbox', id, { title, url, text, fav: $('#ar-fav .on')?.dataset.v || '', slots: $$('#ar-slots .chip.on').map((c) => c.dataset.slot), status: 'new', note: '', added: L.todayISO() });
+    store.put(R, 'inbox', id, { title, url, text, fav: $('#ar-fav .on')?.dataset.v || '', lang: /[\u0600-\u06FF]/.test(text + title) ? 'ar' : 'en', slots: $$('#ar-slots .chip.on').map((c) => c.dataset.slot), status: 'new', note: '', added: L.todayISO() });
     closeSheet(); ui.tab = 'recipes'; render(); toast('Saved. Ask Mealy to read it.');
   },
   'ar-del': (el) => { store.del(R, 'inbox', el.dataset.id); closeSheet(); render(); toast('Removed'); },
