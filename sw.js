@@ -1,5 +1,5 @@
 // Network-first for our own files (so updates show up immediately), cache as offline fallback.
-const CACHE = 'mealy-202611062255';
+const CACHE = 'mealy-202611062301';
 const SHELL = ['./', 'index.html', 'styles.css', 'manifest.webmanifest', 'js/app.js', 'js/logic.js', 'js/sync.js', 'js/icons.js', 'data/catalog.json', 'data/recipes.json', 'icons/icon-192.png', 'icons/icon.svg'];
 
 self.addEventListener('install', (e) => {

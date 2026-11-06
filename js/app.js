@@ -3,7 +3,7 @@ import * as L from './logic.js';
 import { createStore } from './sync.js';
 import { icon } from './icons.js';
 
-const BUILD = '202611062255';
+const BUILD = '202611062301';
 
 // ---------- tiny templating ----------
 const $ = (s, r = document) => r.querySelector(s);
@@ -21,6 +21,28 @@ const lib = { recipes: [], catalog: {} };
 const today0 = L.todayISO();
 const ui = { tab: 'plan', week: L.weekStart(today0), listFrom: L.weekStart(today0), listFromSet: false, listWeeks: 1, q: '', tag: '', folds: new Set() };
 const sec = (f, n) => store.section(f, n);
+// Remember where you were across reloads (tab, week, list, filter, scroll). Week resets after half a day away.
+const UIK = 'mealy:ui';
+let scrolls = {};
+try {
+  const s0 = JSON.parse(localStorage.getItem(UIK) || '{}');
+  if (['plan', 'recipes', 'shop', 'history'].includes(s0.tab)) ui.tab = s0.tab;
+  ui.tag = typeof s0.tag === 'string' ? s0.tag : ''; ui.q = typeof s0.q === 'string' ? s0.q : '';
+  if (s0.listWeeks >= 1 && s0.listWeeks <= 3) ui.listWeeks = s0.listWeeks;
+  scrolls = s0.scrolls || {};
+  if (Date.now() - (s0.at || 0) < 12 * 36e5) {
+    if (/^\d{4}-\d\d-\d\d$/.test(s0.week || '')) ui.week = s0.week;
+    if (/^\d{4}-\d\d-\d\d$/.test(s0.listFrom || '')) { ui.listFrom = s0.listFrom; ui.listFromSet = !!s0.listFromSet; }
+  } else scrolls = {};
+} catch {}
+function saveUI(withScroll = false) {
+  if (withScroll === true) scrolls[ui.tab] = Math.round(window.scrollY);
+  try { localStorage.setItem(UIK, JSON.stringify({ tab: ui.tab, week: ui.week, listFrom: ui.listFrom, listFromSet: ui.listFromSet, listWeeks: ui.listWeeks, tag: ui.tag, q: ui.q, scrolls, at: Date.now() })); } catch {}
+}
+let scrollT;
+window.addEventListener('scroll', () => { clearTimeout(scrollT); scrollT = setTimeout(() => saveUI(true), 250); }, { passive: true });
+window.addEventListener('pagehide', () => saveUI(true));
+document.addEventListener('visibilitychange', () => { if (document.hidden) saveUI(true); });
 
 function lookups() {
   const catalog = { ...lib.catalog, ...L.normalizeCatalog(sec(R, 'catalog')) };
@@ -46,14 +68,24 @@ function showStatus(s, detail) {
 
 // ---------- sheets ----------
 let sheetKind = '', addCtx = null, pick = null;
-function sheet(content, kind = '') {
+function sheet(content, kind = '', cls = '') {
   const el = $('#sheet'), y = el.scrollTop, keep = !$('#overlay').hidden && kind && kind === sheetKind;
   el.innerHTML = `<button class="x" data-act="close-sheet">Close</button>${content.s}`;
+  el.className = `sheet ${cls}`;
   $('#overlay').hidden = false;
+  fitOverlay();
   el.scrollTop = keep ? y : 0;
   sheetKind = kind;
   document.body.style.overflow = 'hidden';
 }
+// Keep the sheet inside the visible area so the keyboard never covers it.
+function fitOverlay() {
+  const o = $('#overlay'), vv = window.visualViewport;
+  if (!vv) return;
+  o.style.top = `${vv.offsetTop}px`; o.style.height = `${vv.height}px`; o.style.bottom = 'auto';
+}
+window.visualViewport?.addEventListener('resize', fitOverlay);
+window.visualViewport?.addEventListener('scroll', fitOverlay);
 function closeSheet() { $('#overlay').hidden = true; $('#sheet').innerHTML = ''; document.body.style.overflow = ''; sheetKind = ''; addCtx = null; }
 
 // ---------- views ----------
@@ -182,6 +214,7 @@ function render(keepScroll = true) {
   const y = window.scrollY;
   $('#view').innerHTML = ({ plan: viewPlan, recipes: viewRecipes, shop: viewShop, history: viewHistory }[ui.tab](ctx)).s;
   if (keepScroll) window.scrollTo(0, y);
+  saveUI();
 }
 
 // ---------- sheets: recipe, entry, picker, add ----------
@@ -253,7 +286,7 @@ function openAdd(date, slot) {
   addCtx = { date, slot };
   sheet(html`<h2>Add a meal</h2><p class="meta">${L.prettyDate(date)}, ${L.SLOT_LABEL[slot]}</p>
     <div style="margin-top:22px"><input class="field" id="addq" data-input="addsearch" placeholder="Search, for example chicken or koshari" autocomplete="off" enterkeyhint="search"></div>
-    <div class="list-pick" id="addlist">${recipeCards(search(lookups(), '', slot), 'pick-recipe')}</div>`);
+    <div class="list-pick" id="addlist">${recipeCards(search(lookups(), '', slot), 'pick-recipe')}</div>`, 'add', 'fixed');
   setTimeout(() => $('#addq')?.focus(), 250);
 }
 
@@ -334,7 +367,7 @@ function openSettings() {
 
 // ---------- actions ----------
 const A = {
-  tab(el) { ui.tab = el.dataset.tab; if (ui.tab === 'shop' && !ui.listFromSet) { ui.listFrom = defaultListFrom(); ui.listFromSet = true; } closeSheet(); render(false); window.scrollTo(0, 0); },
+  tab(el) { ui.tab = el.dataset.tab; if (ui.tab === 'shop' && !ui.listFromSet) { ui.listFrom = defaultListFrom(); ui.listFromSet = true; } closeSheet(); scrolls[ui.tab] = 0; render(false); window.scrollTo(0, 0); },
   settings: () => openSettings(),
   'close-sheet': () => closeSheet(),
   'week-prev': () => { ui.week = L.addDays(ui.week, -7); render(false); },
@@ -490,7 +523,7 @@ function defaultListFrom() {
 
 // ---------- input handlers ----------
 const I = {
-  rsearch(el) { ui.q = el.value; $('#rlist').innerHTML = recipeCards(search(lookups(), ui.q, ui.tag)).s; },
+  rsearch(el) { ui.q = el.value; saveUI(); $('#rlist').innerHTML = recipeCards(search(lookups(), ui.q, ui.tag)).s; },
   addsearch(el) { $('#addlist').innerHTML = recipeCards(search(lookups(), el.value, el.value ? '' : addCtx?.slot || ''), 'pick-recipe').s; },
 };
 const C = {
@@ -524,7 +557,11 @@ async function boot() {
   }
   showStatus(store.connected ? 'syncing' : 'local');
   render(false);
-  requestAnimationFrame(() => { const t = $('.day.today'); if (ui.tab === 'plan' && t) window.scrollTo(0, Math.max(0, t.offsetTop - 64)); });
+  requestAnimationFrame(() => {
+    const t = $('.day.today'), y = scrolls[ui.tab];
+    if (y > 0) window.scrollTo(0, y);
+    else if (ui.tab === 'plan' && t && ui.week === L.weekStart(L.todayISO())) window.scrollTo(0, Math.max(0, t.offsetTop - 64));
+  });
   store.startPolling();
   store.sync();
   checkForUpdate();
