@@ -5,7 +5,7 @@ import { mergeSections, purgeTombstones, sameSections, hasEntries } from './logi
 
 const FILES = {
   'data.json': { plan: {}, purchases: {}, marks: {}, settings: {} },
-  'recipes.json': { recipes: {}, catalog: {} },
+  'recipes.json': { recipes: {}, catalog: {}, inbox: {} },
 };
 const K_CFG = 'mealy:cfg';
 const K_FILE = (f) => `mealy:file:${f}`;

@@ -199,7 +199,7 @@ export function searchRecipes(recipes, catalog, q, { tag = '', boost = {}, limit
   const tokens = norm(q).split(/\s+/).filter(Boolean);
   const out = [];
   for (const r of recipes) {
-    if (tag === 'mine' ? !r.mine : tag && !(r.tags.includes(tag) || r.slots.includes(tag) || (tag === 'quick' && r.time <= 30))) continue;
+    if (tag === 'mine' ? !r.mine : tag === 'fav' ? !r.fav : tag && !(r.tags.includes(tag) || r.slots.includes(tag) || (tag === 'quick' && r.time <= 30))) continue;
     const title = norm(r.title), aka = norm(`${r.aka || ''} ${r.ar || ''}`), tags = norm(`${r.tags.join(' ')} ${r.slots.join(' ')}`);
     const ings = norm(r.ingredients.map((i) => catalog[i.item]?.name || i.item).join(' '));
     let score = 0, ok = true;

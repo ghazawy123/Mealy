@@ -151,3 +151,10 @@ details.fold .group { margin-top: 14px; }
 .wkcard .btn { margin-top: 14px; }
 .hd { font: 400 22px/1.2 var(--serif); margin: 30px 2px 4px; }
 .sheet .serv { display: flex; align-items: center; justify-content: space-between; margin: 22px 0 4px; color: var(--mute); }
+
+/* ---------- add recipe ---------- */
+.plus { position: relative; flex: none; width: 40px; height: 40px; border: 1px solid var(--line); border-radius: 50%; transition: background .15s, border-color .15s; }
+.plus::before, .plus::after { content: ""; position: absolute; left: 50%; top: 50%; background: var(--ink); transform: translate(-50%, -50%); }
+.plus::before { width: 14px; height: 1.25px; } .plus::after { width: 1.25px; height: 14px; }
+.plus:active { background: var(--wash); border-color: var(--gold); }
+textarea.field { resize: none; line-height: 1.5; }

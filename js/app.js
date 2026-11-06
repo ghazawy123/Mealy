@@ -54,7 +54,7 @@ function sheet(content, kind = '') {
 function closeSheet() { $('#overlay').hidden = true; $('#sheet').innerHTML = ''; document.body.style.overflow = ''; sheetKind = ''; addCtx = null; }
 
 // ---------- views ----------
-const metaOf = (r) => [r.time ? `${r.time} minutes` : '', `Serves ${r.servings}`].filter(Boolean).join(', ');
+const metaOf = (r) => [r.time ? `${r.time} minutes` : '', `Serves ${r.servings}`, r.fav ? `${r.fav === 'a' ? names().a : names().b}'s favorite` : ''].filter(Boolean).join(', ');
 const arOf = (r) => (r.ar ? html`<span class="ar" dir="rtl">${r.ar}</span>` : '');
 
 function mealBtn(e, ctx) {
@@ -86,17 +86,24 @@ function viewPlan(ctx) {
     <button class="cta" data-act="to-shop" data-from="${ui.week}"><b>Shopping list for this week</b><span>${count === 0 ? 'No meals planned yet' : `${count} meal${count === 1 ? '' : 's'} planned`}</span></button>`;
 }
 
-const TAGS = [['', 'All'], ['egyptian', 'Egyptian'], ['breakfast', 'Breakfast'], ['lunch', 'Lunch'], ['dinner', 'Dinner'], ['quick', 'Quick'], ['mine', 'Mine']];
+const TAGS = [['', 'All'], ['egyptian', 'Egyptian'], ['breakfast', 'Breakfast'], ['lunch', 'Lunch'], ['dinner', 'Dinner'], ['quick', 'Quick'], ['fav', 'Favorites'], ['mine', 'Mine']];
 function recipeCards(list, act = 'open-recipe') {
   if (!list.length) return html`<div class="empty"><h3>No recipes found</h3><p>Try another word, or add your own.</p></div>`;
   return html`${list.map((r) => html`<button class="rrow" data-act="${act}" data-id="${r.id}"><span class="rt">${r.title}</span><span class="rm">${metaOf(r)}${arOf(r)}</span></button>`)}`;
 }
 const search = (ctx, q, tag) => L.searchRecipes(Object.values(ctx.recipes), ctx.catalog, q, { tag, boost: counts() });
 
+const hostOf = (u) => { try { return new URL(u).hostname.replace(/^www\./, ''); } catch { return u; } };
+function inboxBlock() {
+  const items = L.live(sec(R, 'inbox')).sort((x, y) => (x.u || 0) - (y.u || 0));
+  if (!items.length) return '';
+  return html`<h2 class="hd">Waiting for Mealy</h2>${items.map((i) => html`<button class="rrow" data-act="inbox-open" data-id="${i.id}"><span class="rt">${i.title || (i.url ? hostOf(i.url) : 'Pasted text')}</span><span class="rm">${i.status === 'failed' ? (i.note || "Couldn't read this link. Paste the page text instead.") : i.url ? 'Link saved, ready to read' : 'Text saved, ready to read'}</span></button>`)}<div class="gap2"></div>`;
+}
 function viewRecipes(ctx) {
   return html`
-    <div class="searchbar"><input class="field" data-input="rsearch" placeholder="Search recipes" value="${ui.q}" autocomplete="off" enterkeyhint="search"><button class="link" data-act="new-recipe">New</button></div>
+    <div class="searchbar"><input class="field" data-input="rsearch" placeholder="Search recipes" value="${ui.q}" autocomplete="off" enterkeyhint="search"><button class="plus" data-act="add-recipe" aria-label="Add a recipe"></button></div>
     <div class="chips">${TAGS.map(([k, l]) => html`<button class="chip ${ui.tag === k ? 'on' : ''}" data-act="rtag" data-tag="${k}">${l}</button>`)}</div>
+    ${inboxBlock()}
     <div id="rlist">${recipeCards(search(ctx, ui.q, ui.tag))}</div>`;
 }
 
@@ -277,24 +284,21 @@ function openRepeat(week) {
     <p class="small muted" style="margin-top:18px">Meals are added next to anything already planned.</p>`);
 }
 
-function openNewRecipe() {
-  const ctx = lookups();
-  sheet(html`<h2>New recipe</h2>
-    <span class="lbl">Name</span><input class="field" id="nr-title" placeholder="For example, rice pudding">
-    <div class="row"><div class="grow"><span class="lbl">Serves</span><input class="field" id="nr-serv" type="number" inputmode="numeric" value="4" min="1"></div><div class="grow"><span class="lbl">Minutes</span><input class="field" id="nr-time" type="number" inputmode="numeric" value="30" min="0"></div></div>
-    <span class="lbl">Good for</span><div class="chips" id="nr-slots">${L.SLOTS.map((s) => html`<button type="button" class="chip" data-act="nr-slot" data-slot="${s}">${L.SLOT_LABEL[s]}</button>`)}</div>
-    <span class="lbl">Ingredients</span>
-    <datalist id="nr-dl">${Object.values(ctx.catalog).map((c) => html`<option value="${c.name}"></option>`)}</datalist>
-    <div id="nr-ings"></div><button class="link" data-act="nr-addrow">Add ingredient</button>
-    <span class="lbl">Steps, one per line</span><textarea class="field" id="nr-steps" rows="6" placeholder="Chop the onions&#10;Fry until golden"></textarea>
-    <div class="gap2"></div><button class="btn main block" data-act="nr-save">Save recipe</button>`);
-  nrRow(); nrRow(); nrRow();
-}
-function nrRow() {
-  const d = document.createElement('div');
-  d.className = 'irow';
-  d.innerHTML = `<input class="field" list="nr-dl" placeholder="Ingredient" data-input="nr-name" autocomplete="off"><input class="field" type="number" inputmode="decimal" step="any" placeholder="Qty"><select class="field"><option>g</option><option>ml</option><option>pcs</option></select><button type="button" data-act="nr-delrow" aria-label="Remove">×</button>`;
-  $('#nr-ings').appendChild(d);
+function openAddRecipe(id) {
+  const n = names(), cur = id ? sec(R, 'inbox')[id] : null;
+  const on = (v, k) => (v === k ? 'on' : '');
+  sheet(html`<h2>${cur ? 'Edit recipe' : 'Add a recipe'}</h2>
+    <p class="meta">Mealy turns it into ingredients and steps. You only add a link or the page text.</p>
+    <span class="lbl">Name</span><input class="field" id="ar-title" placeholder="Leave empty to use the page title" value="${cur?.title || ''}" data-id="${id || ''}">
+    <span class="lbl">Favorite of</span>
+    <div class="seg" id="ar-fav"><button type="button" class="${on(cur?.fav, 'a')}" data-act="ar-fav" data-v="a">${n.a}</button><button type="button" class="${on(cur?.fav, 'b')}" data-act="ar-fav" data-v="b">${n.b}</button></div>
+    <span class="lbl">Good for</span>
+    <div class="chips" id="ar-slots">${L.SLOTS.map((s) => html`<button type="button" class="chip ${(cur?.slots || []).includes(s) ? 'on' : ''}" data-act="ar-slot" data-slot="${s}">${L.SLOT_LABEL[s]}</button>`)}</div>
+    <span class="lbl">Link</span><input class="field" id="ar-url" type="url" inputmode="url" placeholder="https://" autocomplete="off" autocapitalize="off" value="${cur?.url || ''}">
+    <span class="lbl">Or paste the whole page text</span><textarea class="field" id="ar-text" rows="7" placeholder="Select all on the recipe page, copy, and paste here">${cur?.text || ''}</textarea>
+    <p class="tiny muted" style="margin-top:12px">Mealy reads it when you ask. If a site blocks it, it shows up here and you can paste the text instead.</p>
+    <div class="gap2"></div><button class="btn main block" data-act="ar-save" data-id="${id || ''}">Save</button>
+    ${cur ? html`<div class="gap"></div><button class="btn warn block small" data-act="ar-del" data-id="${id}">Remove</button>` : ''}`, 'addrecipe');
 }
 
 function openSettings() {
@@ -352,31 +356,19 @@ const A = {
   'entry-serv': (el) => { const e = sec(D, 'plan')[el.dataset.id]; store.put(D, 'plan', e.id, { servings: Math.max(1, (e.servings || 1) + Number(el.dataset.d)) }); openEntry(e.id); render(); },
   'entry-skip': (el) => { const e = sec(D, 'plan')[el.dataset.id]; store.put(D, 'plan', e.id, { skip: !e.skip }); closeSheet(); render(); },
   'entry-del': (el) => { store.del(D, 'plan', el.dataset.id); closeSheet(); render(); toast('Removed'); },
-  'new-recipe': () => openNewRecipe(),
-  'nr-addrow': () => nrRow(),
-  'nr-delrow': (el) => el.parentElement.remove(),
-  'nr-slot': (el) => el.classList.toggle('on'),
-  'nr-save': () => {
-    const ctx = lookups();
-    const title = $('#nr-title').value.trim();
-    if (!title) return toast('Give the recipe a name');
-    const rows = $$('#nr-ings .irow').map((r) => ({ name: r.children[0].value.trim(), qty: parseFloat(r.children[1].value), unit: r.children[2].value })).filter((x) => x.name && x.qty > 0);
-    if (!rows.length) return toast('Add at least one ingredient with a quantity');
-    const byName = Object.fromEntries(Object.values(ctx.catalog).map((c) => [L.norm(c.name), c]));
-    const ingredients = rows.map((x) => {
-      let c = byName[L.norm(x.name)];
-      if (!c) {
-        const id = 'u-' + slug(x.name);
-        c = { id, name: x.name, unit: x.unit, pack: x.unit === 'pcs' ? 1 : 500, packLabel: x.unit === 'pcs' ? '1 pc' : `500 ${x.unit}`, price: 0, store: 'aldi', aisle: 'Other', ...(x.unit === 'pcs' ? { label: 'pcs' } : {}) };
-        store.put(R, 'catalog', id, c); byName[L.norm(x.name)] = c;
-      }
-      return { item: c.id, qty: x.qty };
-    });
-    const steps = $('#nr-steps').value.split('\n').map((s) => s.trim()).filter(Boolean).map((text) => ({ text }));
-    const id = `${slug(title)}-${L.newId().slice(0, 3)}`;
-    store.put(R, 'recipes', id, { title, servings: Math.max(1, parseInt($('#nr-serv').value) || 4), time: parseInt($('#nr-time').value) || 0, slots: $$('#nr-slots .chip.on').map((c) => c.dataset.slot), tags: [], ingredients, steps });
-    closeSheet(); ui.tag = 'mine'; ui.q = ''; render(); toast('Recipe saved');
+  'add-recipe': () => openAddRecipe(),
+  'inbox-open': (el) => openAddRecipe(el.dataset.id),
+  'ar-fav': (el) => { const was = el.classList.contains('on'); $$('#ar-fav button').forEach((b) => b.classList.remove('on')); if (!was) el.classList.add('on'); },
+  'ar-slot': (el) => el.classList.toggle('on'),
+  'ar-save': (el) => {
+    const url = $('#ar-url').value.trim(), text = $('#ar-text').value.trim(), title = $('#ar-title').value.trim();
+    if (!url && !text) return toast('Add a link or paste the page text');
+    if (url && !/^https?:\/\/\S+$/i.test(url)) return toast('The link should start with https://');
+    const id = el.dataset.id || L.newId();
+    store.put(R, 'inbox', id, { title, url, text, fav: $('#ar-fav .on')?.dataset.v || '', slots: $$('#ar-slots .chip.on').map((c) => c.dataset.slot), status: 'new', note: '', added: L.todayISO() });
+    closeSheet(); ui.tab = 'recipes'; render(); toast('Saved. Ask Mealy to read it.');
   },
+  'ar-del': (el) => { store.del(R, 'inbox', el.dataset.id); closeSheet(); render(); toast('Removed'); },
   'del-recipe': (el) => { store.del(R, 'recipes', el.dataset.id); closeSheet(); render(); toast('Recipe deleted'); },
   'share-recipe': async (el) => { const ctx = lookups(), r = ctx.recipes[el.dataset.id]; await shareText(L.recipeText(r, ctx.catalog, parseFloat(el.dataset.sv) / r.servings)); },
   // shopping
@@ -468,11 +460,6 @@ function defaultListFrom() {
 const I = {
   rsearch(el) { ui.q = el.value; $('#rlist').innerHTML = recipeCards(search(lookups(), ui.q, ui.tag)).s; },
   addsearch(el) { $('#addlist').innerHTML = recipeCards(search(lookups(), el.value, el.value ? '' : addCtx?.slot || ''), 'pick-recipe').s; },
-  'nr-name'(el) {
-    const c = Object.values(lookups().catalog).find((x) => L.norm(x.name) === L.norm(el.value));
-    const sel = el.parentElement.children[2];
-    if (c) { sel.value = c.unit; sel.disabled = true; } else sel.disabled = false;
-  },
 };
 const C = {
   'pick-date'(el) { pick.date = el.value; renderPicker(); },
