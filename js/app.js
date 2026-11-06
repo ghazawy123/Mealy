@@ -3,6 +3,8 @@ import * as L from './logic.js';
 import { createStore } from './sync.js';
 import { icon } from './icons.js';
 
+const BUILD = '202611062255';
+
 // ---------- tiny templating ----------
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
@@ -325,7 +327,9 @@ function openSettings() {
     <span class="lbl">Data</span>
     <button class="btn quiet small" style="padding-left:0" data-act="backup">Download backup (JSON)</button>
     ${standalone ? '' : html`<div class="note" style="margin:22px 0 0"><p class="small">Open this page in Safari, tap Share, then Add to Home Screen, to use Mealy like an app.</p></div>`}
-    <p class="tiny muted" style="margin-top:26px;text-align:center">Mealy v1. Prices are rough Aldi Süd estimates.</p>`, 'settings');
+    <span class="lbl">App</span>
+    <button class="btn small" data-act="update-app">Update app</button>
+    <p class="tiny muted" style="margin-top:26px;text-align:center">Version ${BUILD}. Prices are rough Aldi Süd estimates.</p>`, 'settings');
 }
 
 // ---------- actions ----------
@@ -424,6 +428,7 @@ const A = {
     ui.week = dst; ui.tab = 'plan'; closeSheet(); render(false); toast(`Copied ${n} meals`);
   },
   // settings
+  'update-app': () => { toast('Updating…'); refreshApp(); },
   async connect() {
     const token = $('#tok').value.trim(), owner = ($('#own')?.value || '').trim(), repo = ($('#rep')?.value || '').trim();
     if (!token) return toast('Paste the token first');
@@ -444,6 +449,31 @@ const A = {
     a.download = `mealy-backup-${L.todayISO()}.json`; a.click();
   },
 };
+
+// ---------- keep the installed app fresh ----------
+async function refreshApp() {
+  try { for (const r of await navigator.serviceWorker.getRegistrations()) await r.unregister(); } catch {}
+  try { for (const k of await caches.keys()) await caches.delete(k); } catch {}
+  location.reload();
+}
+let lastCheck = 0;
+async function checkForUpdate() {
+  if (Date.now() - lastCheck < 15000) return;
+  lastCheck = Date.now();
+  try {
+    const v = await fetch(`version.json?t=${Date.now()}`, { cache: 'no-store' }).then((r) => r.json());
+    if (v.build && BUILD !== '0' && v.build !== BUILD) {
+      const t = Number(sessionStorage.getItem('mealy:upd')) || 0;
+      if (Date.now() - t < 60000) return; // never reload in a loop
+      sessionStorage.setItem('mealy:upd', String(Date.now()));
+      toast('Updating…'); await refreshApp();
+    }
+  } catch {}
+}
+document.addEventListener('visibilitychange', () => { if (!document.hidden) checkForUpdate(); });
+window.addEventListener('pageshow', checkForUpdate);
+window.addEventListener('focus', checkForUpdate);
+setInterval(checkForUpdate, 5 * 60 * 1000);
 
 async function shareText(text) {
   if (navigator.share) { try { await navigator.share({ text }); return; } catch (e) { if (e.name === 'AbortError') return; } }
@@ -497,6 +527,7 @@ async function boot() {
   requestAnimationFrame(() => { const t = $('.day.today'); if (ui.tab === 'plan' && t) window.scrollTo(0, Math.max(0, t.offsetTop - 64)); });
   store.startPolling();
   store.sync();
+  checkForUpdate();
   if ('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(() => {});
 }
 boot();
